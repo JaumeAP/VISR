@@ -1,5 +1,6 @@
 *~
 build*
+install*
 .project
 .vscode/
 __pycache__
