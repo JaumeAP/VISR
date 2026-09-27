@@ -8,6 +8,13 @@
 # 3.12 for find_package(Python)
 CMAKE_MINIMUM_REQUIRED(VERSION 3.12...4.3)
 
+# Use ccache for faster rebuilds when it's installed; a no-op otherwise.
+find_program( CCACHE_PROGRAM ccache )
+if( CCACHE_PROGRAM )
+  set( CMAKE_C_COMPILER_LAUNCHER "${CCACHE_PROGRAM}" CACHE STRING "" )
+  set( CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PROGRAM}" CACHE STRING "" )
+endif()
+
 # Handle VERSION argument of project() command.
 if( POLICY CMP0048 )
   cmake_policy( SET CMP0048 NEW )
