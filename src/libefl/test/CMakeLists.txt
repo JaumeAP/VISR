@@ -2,7 +2,7 @@
 
 set( APPLICATION_NAME efl_test )
 
-add_executable( ${APPLICATION_NAME} test_main.cpp complex_multiply.cpp lagrange_interpolator.cpp )
+add_executable( ${APPLICATION_NAME} test_main.cpp complex_multiply.cpp lagrange_interpolator.cpp vector_functions_tests.cpp )
 
 target_link_libraries( ${APPLICATION_NAME} PRIVATE rbbl_${BUILD_LIBRARY_TYPE_FOR_APPS} )
 target_link_libraries( ${APPLICATION_NAME} PRIVATE efl_${BUILD_LIBRARY_TYPE_FOR_APPS} )
