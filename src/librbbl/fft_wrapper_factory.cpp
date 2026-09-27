@@ -12,6 +12,10 @@
 #include "ffts_wrapper.hpp"
 #endif
 
+#ifdef BUILD_USE_ACCELERATE
+#include "accelerate_fft_wrapper.hpp"
+#endif
+
 #include <stdexcept>
 
 namespace visr
@@ -98,9 +102,18 @@ struct InstantiateFftWrapperFactory
     FftWrapperFactory<float>::registerWrapper<IppFftWrapper<float> >( "ipp" );
     FftWrapperFactory<double>::registerWrapper<IppFftWrapper<double> >( "ipp" );
 #endif
+
+#ifdef BUILD_USE_ACCELERATE
+    FftWrapperFactory<float>::registerWrapper<AccelerateFftWrapper<float> >( "accelerate" );
+    // vDSP's real FFT is only wrapped for single precision.
+#endif
     // Create entries for the default FFT. These might also depend on the platform
     // and the chosen build options
+#ifdef BUILD_USE_ACCELERATE
+    FftWrapperFactory<float>::registerWrapper<AccelerateFftWrapper<float> >( "default" );
+#else
     FftWrapperFactory<float>::registerWrapper<KissFftWrapper<float> >( "default" );
+#endif
     FftWrapperFactory<double>::registerWrapper<KissFftWrapper<double> >( "default" );
   }
 };
