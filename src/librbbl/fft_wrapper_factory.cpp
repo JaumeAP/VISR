@@ -108,12 +108,16 @@ struct InstantiateFftWrapperFactory
     // vDSP's real FFT is only wrapped for single precision.
 #endif
     // Create entries for the default FFT. These might also depend on the platform
-    // and the chosen build options
-#ifdef BUILD_USE_ACCELERATE
-    FftWrapperFactory<float>::registerWrapper<AccelerateFftWrapper<float> >( "default" );
-#else
+    // and the chosen build options.
+    //
+    // "accelerate" is deliberately NOT used here even though it is faster:
+    // callers that don't request an FFT implementation get "default", and
+    // its numerical rounding differs slightly from KissFFT's (bit-exact
+    // equality between implementations is not guaranteed by the FFTImpl
+    // contract). Silently changing what unspecified callers get would risk
+    // breaking anything relying on KissFFT's specific rounding, such as
+    // bear's variable_block_size tests. Opt in explicitly with "accelerate".
     FftWrapperFactory<float>::registerWrapper<KissFftWrapper<float> >( "default" );
-#endif
     FftWrapperFactory<double>::registerWrapper<KissFftWrapper<double> >( "default" );
   }
 };
