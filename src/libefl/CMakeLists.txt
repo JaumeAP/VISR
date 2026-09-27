@@ -97,6 +97,10 @@ if( VISR_SYSTEM_PROCESSOR MATCHES "armv7l" )
   add_subdirectory( armv7l_neon_32bit )
 endif( VISR_SYSTEM_PROCESSOR MATCHES "armv7l" )
 
+if( VISR_SYSTEM_PROCESSOR MATCHES "arm64" AND APPLE )
+  add_subdirectory( arm64_vdsp )
+endif( VISR_SYSTEM_PROCESSOR MATCHES "arm64" AND APPLE )
+
 if( BUILD_INSTALL_STATIC_LIBRARIES )
   install(TARGETS efl_static
     EXPORT VISR_static_library_exports

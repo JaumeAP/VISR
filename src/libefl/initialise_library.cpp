@@ -10,6 +10,10 @@
 #include "armv7l_neon_32bit/initialise_library.hpp"
 #endif
 
+#if defined( VISR_SYSTEM_PROCESSOR_arm64 ) && defined( __APPLE__ )
+#include "arm64_vdsp/initialise_library.hpp"
+#endif
+
 namespace visr
 {
 namespace efl
@@ -23,6 +27,9 @@ bool initialiseLibrary( char const * processor /*= ""*/ )
 #ifdef VISR_SYSTEM_PROCESSOR_armv7l
   return armv7l_neon_32bit::initialiseLibrary( processor );
 #endif
+#if defined( VISR_SYSTEM_PROCESSOR_arm64 ) && defined( __APPLE__ )
+  return arm64_vdsp::initialiseLibrary( processor );
+#endif
   return true;
 }
 
@@ -33,6 +40,9 @@ bool uninitialiseLibrary()
 #endif
 #ifdef VISR_SYSTEM_PROCESSOR_armv7l
   return armv7l_neon_32bit::uninitialiseLibrary();
+#endif
+#if defined( VISR_SYSTEM_PROCESSOR_arm64 ) && defined( __APPLE__ )
+  return arm64_vdsp::uninitialiseLibrary();
 #endif
   return true;
 }
