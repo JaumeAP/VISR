@@ -71,6 +71,11 @@ if( BUILD_FFTS )
   list( APPEND HEADERS ffts_wrapper.hpp )
 endif( BUILD_FFTS )
 
+if( BUILD_USE_ACCELERATE )
+  list( APPEND SOURCES accelerate_fft_wrapper.cpp )
+  list( APPEND HEADERS accelerate_fft_wrapper.hpp )
+endif( BUILD_USE_ACCELERATE )
+
 if( "static" IN_LIST VISR_BUILD_LIBRARY_TYPES )
   add_library( rbbl_static STATIC ${SOURCES} ${HEADERS} )
   set_target_properties( rbbl_static PROPERTIES OUTPUT_NAME rbbl )
@@ -110,6 +115,10 @@ foreach(LIB_TYPE ${VISR_BUILD_LIBRARY_TYPES} )
     target_include_directories( rbbl_${LIB_TYPE} PRIVATE ${IPP_INCLUDE_DIR} )
     target_link_libraries( rbbl_${LIB_TYPE} PRIVATE ${IPP_LIB_S} ${IPP_LIB_VM} ${IPP_LIB_CORE} )
   endif( BUILD_USE_IPP )
+  if( BUILD_USE_ACCELERATE )
+    target_compile_definitions( rbbl_${LIB_TYPE} PRIVATE -DBUILD_USE_ACCELERATE )
+    target_link_libraries( rbbl_${LIB_TYPE} PRIVATE "-framework Accelerate" )
+  endif( BUILD_USE_ACCELERATE )
   # Set public headers to be installed.
   set_target_properties( rbbl_${LIB_TYPE} PROPERTIES PUBLIC_HEADER "${HEADERS}" )
   # Set include paths for dependent projects

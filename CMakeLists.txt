@@ -401,6 +401,12 @@ endif( VISR_SYSTEM_NAME MATCHES Linux )
 
 option( BUILD_FFTS "Build an internal copy of FFTS" ON )
 
+if( VISR_SYSTEM_NAME MATCHES "MacOS" )
+  option( BUILD_USE_ACCELERATE "Use Apple's Accelerate/vDSP framework for FFTs (faster than KissFFT, used as the default FFT implementation when available)" ON )
+else( VISR_SYSTEM_NAME MATCHES "MacOS" )
+  set( BUILD_USE_ACCELERATE OFF )
+endif( VISR_SYSTEM_NAME MATCHES "MacOS" )
+
 # Add 3rd-party libraries that are built locally.
 add_subdirectory( 3rd )
 

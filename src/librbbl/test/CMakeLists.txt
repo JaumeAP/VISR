@@ -19,6 +19,11 @@ set( SOURCES
  test_main.cpp
 )
 
+if( BUILD_USE_ACCELERATE )
+  list( APPEND SOURCES accelerate_fft_wrapper.cpp )
+  add_definitions( -DBUILD_USE_ACCELERATE )
+endif( BUILD_USE_ACCELERATE )
+
 add_executable( ${APPLICATION_NAME} ${SOURCES} )
 
 target_link_libraries( ${APPLICATION_NAME} PRIVATE rbbl_${BUILD_LIBRARY_TYPE_FOR_APPS})
