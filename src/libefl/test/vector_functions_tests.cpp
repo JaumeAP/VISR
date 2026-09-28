@@ -227,6 +227,122 @@ BOOST_AUTO_TEST_CASE( VectorMultiplyConstantAddInplaceFloat )
   }
 }
 
+BOOST_AUTO_TEST_CASE( VectorSubtractFloat )
+{
+  for( std::size_t n : cTestSizes )
+  {
+    std::vector<float> subtrahend = randomVector( n, 23 ), minuend = randomVector( n, 24 );
+    std::vector<float> expected( n );
+    for( std::size_t i = 0; i < n; ++i ) expected[i] = subtrahend[i] - minuend[i];
+
+    std::vector<float> result( n );
+    BOOST_CHECK_EQUAL(
+        vectorSubtract( subtrahend.data(), minuend.data(), result.data(), n ), noError );
+    checkEqual( result, expected );
+  }
+}
+
+BOOST_AUTO_TEST_CASE( VectorSubtractInplaceFloat )
+{
+  for( std::size_t n : cTestSizes )
+  {
+    std::vector<float> minuend = randomVector( n, 25 ), subtrahendResult = randomVector( n, 26 );
+    std::vector<float> expected( n );
+    for( std::size_t i = 0; i < n; ++i ) expected[i] = minuend[i] - subtrahendResult[i];
+
+    BOOST_CHECK_EQUAL(
+        vectorSubtractInplace( minuend.data(), subtrahendResult.data(), n ), noError );
+    checkEqual( subtrahendResult, expected );
+  }
+}
+
+BOOST_AUTO_TEST_CASE( VectorSubtractConstantFloat )
+{
+  for( std::size_t n : cTestSizes )
+  {
+    float const c = 0.6f;
+    std::vector<float> subtrahend = randomVector( n, 27 );
+    std::vector<float> expected( n );
+    for( std::size_t i = 0; i < n; ++i ) expected[i] = subtrahend[i] - c;
+
+    std::vector<float> result( n );
+    BOOST_CHECK_EQUAL(
+        vectorSubtractConstant( c, subtrahend.data(), result.data(), n ), noError );
+    checkEqual( result, expected );
+  }
+}
+
+BOOST_AUTO_TEST_CASE( VectorSubtractConstantInplaceFloat )
+{
+  for( std::size_t n : cTestSizes )
+  {
+    float const c = -1.3f;
+    std::vector<float> subtrahendResult = randomVector( n, 28 );
+    std::vector<float> expected( n );
+    for( std::size_t i = 0; i < n; ++i ) expected[i] = subtrahendResult[i] - c;
+
+    BOOST_CHECK_EQUAL(
+        vectorSubtractConstantInplace( c, subtrahendResult.data(), n ), noError );
+    checkEqual( subtrahendResult, expected );
+  }
+}
+
+BOOST_AUTO_TEST_CASE( VectorRampScalingFloat )
+{
+  for( std::size_t n : cTestSizes )
+  {
+    float const baseGain = 0.25f, rampGain = 1.4f;
+    std::vector<float> input = randomVector( n, 29 ), ramp = randomVector( n, 30 );
+    std::vector<float> expected( n );
+    for( std::size_t i = 0; i < n; ++i )
+      expected[i] = ( baseGain + rampGain * ramp[i] ) * input[i];
+
+    std::vector<float> output( n );
+    BOOST_CHECK_EQUAL(
+        vectorRampScaling( input.data(), ramp.data(), output.data(), baseGain, rampGain, n,
+                           false ),
+        noError );
+    checkEqual( output, expected );
+  }
+}
+
+BOOST_AUTO_TEST_CASE( VectorRampScalingAccumulateFloat )
+{
+  for( std::size_t n : cTestSizes )
+  {
+    float const baseGain = -0.5f, rampGain = 2.1f;
+    std::vector<float> input = randomVector( n, 31 ), ramp = randomVector( n, 32 ),
+                       output = randomVector( n, 33 );
+    std::vector<float> expected( output );
+    for( std::size_t i = 0; i < n; ++i )
+      expected[i] += ( baseGain + rampGain * ramp[i] ) * input[i];
+
+    BOOST_CHECK_EQUAL(
+        vectorRampScaling( input.data(), ramp.data(), output.data(), baseGain, rampGain, n,
+                           true ),
+        noError );
+    checkEqual( output, expected );
+  }
+}
+
+BOOST_AUTO_TEST_CASE( VectorRampScalingLargeFloat )
+{
+  // Exercises the arm64 backend's chunked stack-buffer loop (chunk size 64)
+  // across several chunk boundaries.
+  std::size_t const n = 200;
+  float const baseGain = 0.1f, rampGain = 0.9f;
+  std::vector<float> input = randomVector( n, 34 ), ramp = randomVector( n, 35 );
+  std::vector<float> expected( n );
+  for( std::size_t i = 0; i < n; ++i )
+    expected[i] = ( baseGain + rampGain * ramp[i] ) * input[i];
+
+  std::vector<float> output( n );
+  BOOST_CHECK_EQUAL(
+      vectorRampScaling( input.data(), ramp.data(), output.data(), baseGain, rampGain, n, false ),
+      noError );
+  checkEqual( output, expected );
+}
+
 } // namespace test
 } // namespace efl
 } // namespace visr

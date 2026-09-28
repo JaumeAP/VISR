@@ -20,6 +20,11 @@ bool initialiseLibrary( char const * /*processor = ""*/ )
   VectorAddConstantWrapper<float>::set( &arm64_vdsp::vectorAddConstant<float> );
   VectorAddConstantInplaceWrapper<float>::set( &arm64_vdsp::vectorAddConstantInplace<float> );
 
+  VectorSubtractWrapper<float>::set( &arm64_vdsp::vectorSubtract<float> );
+  VectorSubtractInplaceWrapper<float>::set( &arm64_vdsp::vectorSubtractInplace<float> );
+  VectorSubtractConstantWrapper<float>::set( &arm64_vdsp::vectorSubtractConstant<float> );
+  VectorSubtractConstantInplaceWrapper<float>::set( &arm64_vdsp::vectorSubtractConstantInplace<float> );
+
   VectorMultiplyWrapper<float>::set( &arm64_vdsp::vectorMultiply<float> );
   VectorMultiplyInplaceWrapper<float>::set( &arm64_vdsp::vectorMultiplyInplace<float> );
   VectorMultiplyConstantWrapper<float>::set( &arm64_vdsp::vectorMultiplyConstant<float> );
@@ -29,6 +34,8 @@ bool initialiseLibrary( char const * /*processor = ""*/ )
   VectorMultiplyAddInplaceWrapper<float>::set( &arm64_vdsp::vectorMultiplyAddInplace<float> );
   VectorMultiplyConstantAddWrapper<float>::set( &arm64_vdsp::vectorMultiplyConstantAdd<float> );
   VectorMultiplyConstantAddInplaceWrapper<float>::set( &arm64_vdsp::vectorMultiplyConstantAddInplace<float> );
+
+  VectorRampScalingWrapper<float>::set( &arm64_vdsp::vectorRampScaling<float> );
 
   return true;
 }
@@ -40,6 +47,11 @@ bool uninitialiseLibrary()
   VectorAddConstantWrapper<float>::set( &reference::vectorAddConstant<float> );
   VectorAddConstantInplaceWrapper<float>::set( &reference::vectorAddConstantInplace<float> );
 
+  VectorSubtractWrapper<float>::set( &reference::vectorSubtract<float> );
+  VectorSubtractInplaceWrapper<float>::set( &reference::vectorSubtractInplace<float> );
+  VectorSubtractConstantWrapper<float>::set( &reference::vectorSubtractConstant<float> );
+  VectorSubtractConstantInplaceWrapper<float>::set( &reference::vectorSubtractConstantInplace<float> );
+
   VectorMultiplyWrapper<float>::set( &reference::vectorMultiply<float> );
   VectorMultiplyInplaceWrapper<float>::set( &reference::vectorMultiplyInplace<float> );
   VectorMultiplyConstantWrapper<float>::set( &reference::vectorMultiplyConstant<float> );
@@ -49,6 +61,8 @@ bool uninitialiseLibrary()
   VectorMultiplyAddInplaceWrapper<float>::set( &reference::vectorMultiplyAddInplace<float> );
   VectorMultiplyConstantAddWrapper<float>::set( &reference::vectorMultiplyConstantAdd<float> );
   VectorMultiplyConstantAddInplaceWrapper<float>::set( &reference::vectorMultiplyConstantAddInplace<float> );
+
+  VectorRampScalingWrapper<float>::set( &reference::vectorRampScaling<float> );
 
   return true;
 }
