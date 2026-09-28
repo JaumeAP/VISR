@@ -10,6 +10,8 @@ set( SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/vector_add.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/vector_multiply.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/vector_multiply_add.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vector_subtract.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vector_ramp_scaling.cpp
 )
 
 # Add the architecture-specific files to the efl libraries.

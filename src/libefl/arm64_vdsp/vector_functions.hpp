@@ -47,6 +47,36 @@ ErrorCode vectorAddConstantInplace( T constantValue,
 
 template<typename T>
 VISR_EFL_LIBRARY_SYMBOL
+ErrorCode vectorSubtract( T const * const subtrahend,
+                         T const * const minuend,
+                         T * const result,
+                         std::size_t numElements,
+                         std::size_t alignment = 0 );
+
+template<typename T>
+VISR_EFL_LIBRARY_SYMBOL
+ErrorCode vectorSubtractInplace( T const * const minuend,
+                                T * const subtrahendResult,
+                                std::size_t numElements,
+                                std::size_t alignment = 0 );
+
+template<typename T>
+VISR_EFL_LIBRARY_SYMBOL
+ErrorCode vectorSubtractConstant( T constantMinuend,
+                                 T const * const subtrahend,
+                                 T * const result,
+                                 std::size_t numElements,
+                                 std::size_t alignment = 0 );
+
+template<typename T>
+VISR_EFL_LIBRARY_SYMBOL
+ErrorCode vectorSubtractConstantInplace( T constantMinuend,
+                                        T * const subtrahendResult,
+                                        std::size_t numElements,
+                                        std::size_t alignment = 0 );
+
+template<typename T>
+VISR_EFL_LIBRARY_SYMBOL
 ErrorCode vectorMultiply( T const * const factor1,
                          T const * const factor2,
                          T * const result,
@@ -108,6 +138,17 @@ ErrorCode vectorMultiplyConstantAddInplace( T constFactor,
                                            T * const accumulator,
                                            std::size_t numElements,
                                            std::size_t alignment = 0 );
+
+template<typename T>
+VISR_EFL_LIBRARY_SYMBOL
+ErrorCode vectorRampScaling( T const * input,
+                            T const * ramp,
+                            T * output,
+                            T baseGain,
+                            T rampGain,
+                            std::size_t numberOfElements,
+                            bool accumulate = false,
+                            std::size_t alignmentElements = 0 );
 
 } // namespace arm64_vdsp
 } // namespace efl
